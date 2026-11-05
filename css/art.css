@@ -1,0 +1,132 @@
+/* =====================================================================
+   art.css — motion for the SVG artwork (shared by site + video renderer)
+   ===================================================================== */
+
+svg .spin-slow { transform-box: fill-box; transform-origin: 50% 100%; }
+.art-haldi .spin-slow { transform-box: view-box; transform-origin: 150px 120px; animation: spin 40s linear infinite; }
+.marigold { transform-box: fill-box; transform-origin: center; }
+.marigold.spin-a { animation: spin 14s linear infinite; }
+.marigold.spin-b { animation: spin 18s linear infinite reverse; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes bob { 50% { transform: translateY(-5px); } }
+@keyframes twinkle { 0%, 100% { opacity: .15; } 50% { opacity: 1; } }
+
+/* ---------- Ganesh Ji ---------- */
+.ganesha { overflow: visible; }
+.ganesha .g-halo { transform-box: view-box; transform-origin: 120px 120px; animation: spin 60s linear infinite; }
+.ganesha .g-glow { animation: glowPulse 3.2s ease-in-out infinite; }
+@keyframes glowPulse { 50% { opacity: .55; } }
+.ganesha .g-ear-l, .ganesha .g-ear-r { transform-box: fill-box; transform-origin: 100% 45%; animation: earFlap 3.4s ease-in-out infinite; }
+@keyframes earFlap { 50% { transform: rotate(-6deg) scaleX(.97); } }
+.ganesha .g-trunk { transform-box: fill-box; transform-origin: 30% 0%; animation: trunkSway 4.2s ease-in-out infinite; }
+@keyframes trunkSway { 50% { transform: rotate(-5deg); } }
+.ganesha .g-eyes { transform-box: fill-box; transform-origin: center; animation: blinkEyes 5s infinite; }
+@keyframes blinkEyes { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.08); } }
+
+/* Draw-on reveal (add .drawing on a parent to play it) */
+.drawing .ganesha .g-line { stroke-dasharray: 1; stroke-dashoffset: 1; animation: drawLine 2.6s ease forwards; }
+.drawing .ganesha .g-fill, .drawing .ganesha .g-neck { opacity: 0; animation: fadeIn 1.4s ease 1.6s forwards; }
+.drawing .ganesha .g-trunk > path { opacity: 0; animation: fadeIn 1.2s ease 1.2s forwards; }
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* ---------- Diya / bell ---------- */
+.diya .flame { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker .5s ease-in-out infinite alternate; }
+.diya .diya-glow { animation: glowPulse 1.8s ease-in-out infinite; }
+@keyframes flicker { from { transform: scale(1, 1) rotate(-3deg); } to { transform: scale(.88, 1.16) rotate(3deg); } }
+.bell { transform-origin: 50% 0; animation: bellSwing 2.8s ease-in-out infinite; }
+@keyframes bellSwing { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+
+/* ---------- Toran ---------- */
+.toran-svg .tstring { transform-box: fill-box; transform-origin: 50% 0; animation: bellSwing 3s ease-in-out infinite; animation-delay: calc(var(--k) * -.35s); }
+
+/* ---------- Haldi ---------- */
+.art-haldi .bob { animation: bob 3.6s ease-in-out infinite; }
+.art-haldi .shine { animation: twinkle 2.4s ease-in-out infinite; }
+.art-haldi .splash { animation: splash 3s ease-out infinite; animation-delay: calc(var(--i) * -.4s); }
+@keyframes splash { 0% { opacity: 0; transform: translateY(20px) scale(.4); } 30% { opacity: .9; } 100% { opacity: 0; transform: translateY(-14px) scale(1.2); } }
+.art-haldi .splash { transform-box: fill-box; transform-origin: center; }
+
+/* ---------- Mehendi ---------- */
+.art-mehendi .draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: henna 7s ease-in-out infinite; }
+.art-mehendi .cap, .art-mehendi .dot { opacity: 0; animation: hennaDot 7s ease-in-out infinite; }
+@keyframes henna { 0% { stroke-dashoffset: 1; } 45%, 88% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes hennaDot { 0%, 30% { opacity: 0; } 50%, 88% { opacity: 1; } 100% { opacity: 0; } }
+.art-mehendi .cone { animation: cone 7s ease-in-out infinite; }
+@keyframes cone { 0% { transform: translate(-40px, -10px); } 20% { transform: translate(-70px, 10px); } 40% { transform: translate(-30px, -30px); } 60%, 100% { transform: translate(0, 0); } }
+.art-mehendi .leaf { animation: twinkle 5s ease-in-out infinite; animation-delay: calc(var(--i) * -.6s); }
+.art-mehendi .hand { animation: bob 5s ease-in-out infinite; }
+
+/* ---------- Sangeet ---------- */
+.art-sangeet .bulb { animation: twinkle 1.4s ease-in-out infinite; animation-delay: calc(var(--i) * -.17s); }
+.art-sangeet .star { animation: twinkle 3s ease-in-out infinite; animation-delay: calc(var(--i) * -.37s); }
+.art-sangeet .beam { transform-box: fill-box; transform-origin: 50% 0; }
+.art-sangeet .b1 { animation: beamL 4s ease-in-out infinite; }
+.art-sangeet .b2 { animation: beamR 4.6s ease-in-out infinite; }
+@keyframes beamL { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(16deg); } }
+@keyframes beamR { 0%, 100% { transform: rotate(14deg); } 50% { transform: rotate(-18deg); } }
+.art-sangeet .note { animation: note 4s ease-in infinite; animation-delay: calc(var(--i) * -.7s); opacity: 0; }
+@keyframes note { 0% { opacity: 0; transform: translateY(0) rotate(-8deg); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-140px) rotate(12deg); } }
+.art-sangeet .stick { transform-box: fill-box; }
+.art-sangeet .s1 { transform-origin: 0 0; animation: hitL .6s ease-in infinite; }
+.art-sangeet .s2 { transform-origin: 100% 0; animation: hitR .6s ease-in infinite .3s; }
+@keyframes hitL { 0%, 100% { transform: rotate(-16deg); } 45% { transform: rotate(0); } }
+@keyframes hitR { 0%, 100% { transform: rotate(16deg); } 45% { transform: rotate(0); } }
+.art-sangeet .ring { transform-box: fill-box; transform-origin: center; opacity: 0; }
+.art-sangeet .r1 { animation: ring .6s ease-out infinite .27s; }
+.art-sangeet .r2 { animation: ring .6s ease-out infinite .57s; }
+@keyframes ring { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(2.2); } }
+.art-sangeet .dhol { transform-box: fill-box; transform-origin: center; animation: thump .3s ease-out infinite; }
+@keyframes thump { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.02); } }
+
+/* ---------- Baraat / elephant ---------- */
+.elephant .e-leg { transform-box: fill-box; transform-origin: 50% 0; }
+.elephant .la { animation: legA 1s ease-in-out infinite alternate; }
+.elephant .lb { animation: legB 1s ease-in-out infinite alternate; }
+@keyframes legA { from { transform: rotate(-12deg); } to { transform: rotate(12deg); } }
+@keyframes legB { from { transform: rotate(12deg); } to { transform: rotate(-12deg); } }
+.elephant .e-body { animation: stomp .5s ease-in-out infinite alternate; }
+@keyframes stomp { to { transform: translateY(-3px); } }
+.elephant .e-trunk { transform-box: fill-box; transform-origin: 20% 0; animation: tsw 2.4s ease-in-out infinite alternate; }
+@keyframes tsw { from { transform: rotate(-8deg); } to { transform: rotate(10deg); } }
+.elephant .e-ear { transform-box: fill-box; transform-origin: 90% 40%; animation: earE 1s ease-in-out infinite alternate; }
+@keyframes earE { from { transform: rotate(-8deg); } to { transform: rotate(6deg); } }
+.elephant .e-tail { transform-box: fill-box; transform-origin: 100% 0; animation: earE .7s ease-in-out infinite alternate; }
+.art-baraat .fw { transform-box: fill-box; transform-origin: center; opacity: 0; animation: firework 2.5s ease-out infinite; animation-delay: calc(var(--k) * -.5s); }
+@keyframes firework { 0% { opacity: 0; transform: scale(.1); } 10% { opacity: 1; } 70% { opacity: .8; } 100% { opacity: 0; transform: scale(1.25); } }
+.art-baraat .flame, .art-reception .fl { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker .45s ease-in-out infinite alternate; }
+
+/* ---------- Reception ---------- */
+.art-reception .f2 { animation-duration: .38s; animation-delay: -.2s; }
+.art-reception .f3 { animation-duration: .52s; animation-delay: -.1s; }
+.art-reception .fireglow { animation: glowPulse 1.6s ease-in-out infinite; }
+.art-reception .tw { animation: twinkle 2.2s ease-in-out infinite; animation-delay: calc(var(--i) * -.29s); }
+.art-reception .hbell { transform-box: fill-box; transform-origin: 50% 0; animation: bellSwing 2.6s ease-in-out infinite; animation-delay: calc(var(--i) * -.6s); }
+.art-reception .garland { transform-box: fill-box; transform-origin: 50% 0; animation: garl 4s ease-in-out infinite; }
+@keyframes garl { 50% { transform: rotate(1.2deg) translateY(1px); } }
+
+/* ---------- Falling petals ---------- */
+.petals { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.petals i {
+  position: absolute; top: -6%;
+  width: 11px; height: 15px;
+  border-radius: 70% 0 70% 0;
+  background: linear-gradient(135deg, #ffbf47, #e8731c);
+  opacity: .95;
+  animation: petalFall var(--dur) linear var(--delay) infinite;
+}
+.petals.rose i { background: linear-gradient(135deg, #ff6f86, #a8102a); }
+.petals i:nth-child(3n) { background: linear-gradient(135deg, #fff1b0, #f2b33d); }
+.petals.rose i:nth-child(3n) { background: linear-gradient(135deg, #ffd4dc, #e05570); }
+@keyframes petalFall {
+  0% { transform: translate(0, 0) rotate(0) scale(var(--sc)); }
+  50% { transform: translate(calc(var(--dx) * -.6), 55vh) rotate(260deg) scale(var(--sc)); }
+  100% { transform: translate(var(--dx), 112vh) rotate(540deg) scale(var(--sc)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  svg *, .petals i, .bell, .ganesha * { animation: none !important; }
+  .drawing .ganesha .g-line { stroke-dashoffset: 0; }
+  .drawing .ganesha .g-fill, .drawing .ganesha .g-neck, .drawing .ganesha .g-trunk > path { opacity: 1; }
+}
