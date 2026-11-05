@@ -1,8 +1,9 @@
-# Wedding Invitation 💍
+# Yashi & Siddhant — Wedding Invitation 💍
 
 A single-page wedding invitation website with:
 
-- An elegant hero section showing the couple's names and the date
+- A **tap-to-open envelope video** intro (`assets/intro.mp4` for desktop, `assets/intro-mobile.mp4` portrait version for phones)
+- A black & gold "Save The Date" card with the couple's names and the date
 - A live countdown to the wedding
 - Event cards (Haldi, Sangeet, Wedding…) with **Directions** and **Add to Calendar** buttons
 - An RSVP form that sends the response to you on WhatsApp

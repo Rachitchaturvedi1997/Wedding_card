@@ -4,17 +4,20 @@
    ========================================================= */
 const WEDDING = {
   blessing: "|| Shree Ganeshaya Namah ||",
-  bride: "Bride Name",
-  groom: "Groom Name",
-  brideParents: "Daughter of Mr. & Mrs. Bride's Parents",
-  groomParents: "Son of Mr. & Mrs. Groom's Parents",
-  familyName: "The Bride & Groom Families",
-  cityText: "Jaipur, Rajasthan",
-  hashtag: "#ForeverTogether",
-  rsvpBy: "January 15, 2027",
+  bride: "Yashi",
+  groom: "Siddhant",
+  monogram: "S&Y",
+  brideParents: "Mr. & Mrs. Bride's Parents",
+  groomParents: "Mr. & Mrs. Groom's Parents",
+  familyName: "The Families of Yashi & Siddhant",
+  cityText: "City, State",
+  hashtag: "#YashiWedsSiddhant",
+  rsvpBy: "10th January 2026",
 
   // Main wedding moment, used for the countdown (local time, YYYY-MM-DDTHH:MM)
-  weddingDateTime: "2027-02-14T19:00",
+  weddingDateTime: "2026-01-23T19:00",
+  // How the date is written on the card (matches the video)
+  dateText: "23rd January 2026",
 
   // WhatsApp number that receives RSVPs (country code + number, digits only)
   rsvpWhatsApp: "919999999999",
@@ -26,37 +29,38 @@ const WEDDING = {
 
   events: [
     {
-      icon: "🌿",
+      icon: "🌼",
       name: "Haldi",
-      start: "2027-02-13T10:00",
-      end: "2027-02-13T13:00",
-      venue: "Family Residence",
-      address: "123 Example Street, Jaipur",
-      mapUrl: "https://maps.google.com/?q=Jaipur",
+      start: "2026-01-22T10:00",
+      end: "2026-01-22T13:00",
+      venue: "Venue Name",
+      address: "Venue address",
+      mapUrl: "https://maps.google.com/",
     },
     {
       icon: "🎶",
       name: "Sangeet",
-      start: "2027-02-13T19:00",
-      end: "2027-02-13T23:00",
-      venue: "The Grand Banquet",
-      address: "456 Example Road, Jaipur",
-      mapUrl: "https://maps.google.com/?q=Jaipur",
+      start: "2026-01-22T19:00",
+      end: "2026-01-22T23:00",
+      venue: "Venue Name",
+      address: "Venue address",
+      mapUrl: "https://maps.google.com/",
     },
     {
       icon: "💍",
       name: "Wedding",
-      start: "2027-02-14T19:00",
-      end: "2027-02-15T01:00",
-      venue: "The Royal Palace Lawns",
-      address: "789 Example Avenue, Jaipur",
-      mapUrl: "https://maps.google.com/?q=Jaipur",
+      start: "2026-01-23T19:00",
+      end: "2026-01-24T01:00",
+      venue: "Venue Name",
+      address: "Venue address",
+      mapUrl: "https://maps.google.com/",
     },
   ],
 };
 
 /* ========================================================= */
 
+const $ = (id) => document.getElementById(id);
 const pad = (n) => String(n).padStart(2, "0");
 
 function formatDate(iso) {
@@ -64,14 +68,54 @@ function formatDate(iso) {
     weekday: "long", day: "numeric", month: "long", year: "numeric",
   });
 }
-
 function formatTime(iso) {
   return new Date(iso).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" });
 }
 
-// Fill simple text fields
+/* ---------- Envelope intro ---------- */
+function setupIntro() {
+  const intro = $("intro");
+  const video = $("intro-video");
+  const openBtn = $("open-btn");
+  const skipBtn = $("skip-btn");
+
+  // Portrait (phone) screens get the vertical version of the video
+  const portrait = window.matchMedia("(max-aspect-ratio: 1/1)").matches;
+  video.poster = portrait ? "assets/poster-mobile.jpg" : "assets/poster.jpg";
+  video.src = portrait ? "assets/intro-mobile.mp4" : "assets/intro.mp4";
+
+  const finish = () => {
+    intro.classList.add("done");
+    document.body.classList.remove("locked");
+    skipBtn.hidden = true;
+    video.pause();
+  };
+
+  openBtn.addEventListener("click", () => {
+    openBtn.classList.add("hide");
+    skipBtn.hidden = false;
+    video.currentTime = 0;
+    video.muted = false;
+    video.play().catch(() => { video.muted = true; video.play().catch(finish); });
+  });
+  video.addEventListener("ended", finish);
+  video.addEventListener("error", finish);
+  skipBtn.addEventListener("click", finish);
+
+  $("replay").addEventListener("click", () => {
+    window.scrollTo(0, 0);
+    document.body.classList.add("locked");
+    intro.classList.remove("done");
+    openBtn.classList.add("hide");
+    skipBtn.hidden = false;
+    video.currentTime = 0;
+    video.play().catch(finish);
+  });
+}
+
+/* ---------- Text fields ---------- */
 function fillFields() {
-  const values = { ...WEDDING, dateText: formatDate(WEDDING.weddingDateTime) };
+  const values = { ...WEDDING, dateText: WEDDING.dateText || formatDate(WEDDING.weddingDateTime) };
   document.querySelectorAll("[data-field]").forEach((el) => {
     const v = values[el.dataset.field];
     if (v != null) el.textContent = v;
@@ -79,7 +123,7 @@ function fillFields() {
   document.title = `${WEDDING.bride} & ${WEDDING.groom} — Wedding Invitation`;
 }
 
-// Build an .ics calendar file for an event
+/* ---------- Add to calendar (.ics) ---------- */
 function icsFor(ev) {
   const toICS = (iso) => {
     const d = new Date(iso);
@@ -101,7 +145,7 @@ function icsFor(ev) {
 }
 
 function renderEvents() {
-  const list = document.getElementById("event-list");
+  const list = $("event-list");
   WEDDING.events.forEach((ev) => {
     const card = document.createElement("article");
     card.className = "event";
@@ -130,26 +174,29 @@ function renderEvents() {
   });
 }
 
+/* ---------- Countdown ---------- */
 function startCountdown() {
   const target = new Date(WEDDING.weddingDateTime).getTime();
-  const el = (id) => document.getElementById(id);
+  let timer;
   const tick = () => {
-    const diff = Math.max(0, target - Date.now());
-    el("cd-days").textContent = Math.floor(diff / 864e5);
-    el("cd-hours").textContent = pad(Math.floor(diff / 36e5) % 24);
-    el("cd-mins").textContent = pad(Math.floor(diff / 6e4) % 60);
-    el("cd-secs").textContent = pad(Math.floor(diff / 1e3) % 60);
-    if (diff === 0) {
-      document.getElementById("countdown").innerHTML = "<p>Just married! 💐</p>";
+    const diff = target - Date.now();
+    if (diff <= 0) {
+      $("countdown").innerHTML = '<div class="married">Happily Married</div>';
       clearInterval(timer);
+      return;
     }
+    $("cd-days").textContent = Math.floor(diff / 864e5);
+    $("cd-hours").textContent = pad(Math.floor(diff / 36e5) % 24);
+    $("cd-mins").textContent = pad(Math.floor(diff / 6e4) % 60);
+    $("cd-secs").textContent = pad(Math.floor(diff / 1e3) % 60);
   };
-  const timer = setInterval(tick, 1000);
+  timer = setInterval(tick, 1000);
   tick();
 }
 
+/* ---------- RSVP via WhatsApp ---------- */
 function setupRSVP() {
-  document.getElementById("rsvp-form").addEventListener("submit", (e) => {
+  $("rsvp-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const f = new FormData(e.target);
     const text = [
@@ -157,14 +204,14 @@ function setupRSVP() {
       `Name: ${f.get("name")}`,
       `Guests: ${f.get("guests")}`,
       `Response: ${f.get("attending")}`,
-      f.get("message") ? `Message: ${f.get("message")}` : "",
+      f.get("message") ? `Blessings: ${f.get("message")}` : "",
     ].filter(Boolean).join("\n");
     window.open(`https://wa.me/${WEDDING.rsvpWhatsApp}?text=${encodeURIComponent(text)}`, "_blank");
   });
 }
 
 function renderContacts() {
-  const c = document.getElementById("contact");
+  const c = $("contact");
   WEDDING.contacts.forEach((p, i) => {
     if (i) c.append(" · ");
     const a = document.createElement("a");
@@ -174,8 +221,20 @@ function renderContacts() {
   });
 }
 
+/* ---------- Fade sections in on scroll ---------- */
+function setupReveal() {
+  const els = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) { els.forEach((e) => e.classList.add("in")); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+  }, { threshold: 0.15 });
+  els.forEach((e) => io.observe(e));
+}
+
 fillFields();
 renderEvents();
 startCountdown();
 setupRSVP();
 renderContacts();
+setupReveal();
+setupIntro();
