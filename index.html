@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wedding Invitation</title>
+  <meta name="description" content="You are warmly invited to celebrate our wedding." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Opening envelope / intro -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <p class="blessing" data-field="blessing"></p>
+      <p class="intro">Together with their families</p>
+      <h1 class="names">
+        <span data-field="bride"></span>
+        <span class="amp">&amp;</span>
+        <span data-field="groom"></span>
+      </h1>
+      <p class="intro">request the pleasure of your company<br />at the celebration of their marriage</p>
+      <div class="divider" aria-hidden="true">❖</div>
+      <p class="date" data-field="dateText"></p>
+      <p class="place" data-field="cityText"></p>
+
+      <div class="countdown" id="countdown" aria-live="polite">
+        <div><span id="cd-days">0</span><small>Days</small></div>
+        <div><span id="cd-hours">0</span><small>Hours</small></div>
+        <div><span id="cd-mins">0</span><small>Minutes</small></div>
+        <div><span id="cd-secs">0</span><small>Seconds</small></div>
+      </div>
+
+      <a href="#events" class="btn">View Celebrations</a>
+    </div>
+  </section>
+
+  <section class="section" id="couple">
+    <h2>The Couple</h2>
+    <div class="couple">
+      <div class="person">
+        <div class="avatar" aria-hidden="true">🌸</div>
+        <h3 data-field="bride"></h3>
+        <p data-field="brideParents"></p>
+      </div>
+      <div class="person">
+        <div class="avatar" aria-hidden="true">🌿</div>
+        <h3 data-field="groom"></h3>
+        <p data-field="groomParents"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="events">
+    <h2>Celebrations</h2>
+    <div class="events" id="event-list"></div>
+  </section>
+
+  <section class="section" id="rsvp">
+    <h2>RSVP</h2>
+    <p class="lead">Kindly let us know if you can join us by <strong data-field="rsvpBy"></strong>.</p>
+    <form id="rsvp-form" class="rsvp">
+      <label>Your name
+        <input name="name" required autocomplete="name" />
+      </label>
+      <label>Number of guests
+        <input name="guests" type="number" min="1" max="10" value="1" required />
+      </label>
+      <label>Will you attend?
+        <select name="attending">
+          <option>Joyfully accept</option>
+          <option>Regretfully decline</option>
+        </select>
+      </label>
+      <label>Message for the couple (optional)
+        <textarea name="message" rows="3"></textarea>
+      </label>
+      <button type="submit" class="btn">Send RSVP on WhatsApp</button>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <p class="hashtag" data-field="hashtag"></p>
+    <p>With love, <span data-field="familyName"></span></p>
+    <p class="contact" id="contact"></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
